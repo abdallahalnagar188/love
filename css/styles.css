@@ -1,0 +1,857 @@
+/* ===================================================================
+   💖 ROMANTIC BIRTHDAY & LOVE STORY - CUSTOM STYLES
+   =================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Dancing+Script:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --primary-rose: #ff3366;
+  --secondary-pink: #ff758c;
+  --warm-gold: #ffd166;
+  --deep-purple: #140822;
+  --dark-bg: #09060f;
+  --glass-bg: rgba(22, 12, 33, 0.65);
+  --glass-border: rgba(255, 117, 140, 0.2);
+  --glass-glow: 0 8px 32px 0 rgba(255, 51, 102, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background-color: var(--dark-bg);
+  color: #fce7f3;
+}
+
+body {
+  font-family: 'Cairo', 'Tajawal', 'Plus Jakarta Sans', sans-serif;
+  overflow-x: hidden;
+  background: radial-gradient(circle at 50% 0%, #2b0e2f 0%, #150921 45%, #08050e 100%);
+  min-height: 100vh;
+  position: relative;
+  selection-background-color: #ff3366;
+  selection-color: #ffffff;
+}
+
+::selection {
+  background-color: #ff3366;
+  color: #ffffff;
+}
+
+/* Custom Romantic Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #0d0714;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #ff3366, #ff758c, #ffd166);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #ff4b91, #ff8fa3, #ffe66d);
+}
+
+/* Script & Handwritten Fonts */
+.font-handwriting {
+  font-family: 'Dancing Script', cursive;
+}
+
+.font-arabic-heading {
+  font-family: 'Cairo', sans-serif;
+}
+
+/* Canvas Background */
+#particles-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ===================================================================
+   GLASSMORPHISM & GLOW UTILITIES
+   =================================================================== */
+.glass-panel {
+  background: rgba(26, 12, 38, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 117, 140, 0.22);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.glass-card {
+  background: rgba(32, 14, 46, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 117, 140, 0.25);
+  box-shadow: 0 12px 30px rgba(10, 4, 18, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 117, 140, 0.6);
+  box-shadow: 0 18px 45px rgba(255, 51, 102, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(255, 51, 102, 0.6), 0 0 40px rgba(255, 117, 140, 0.3);
+}
+
+.text-gold-glow {
+  text-shadow: 0 0 15px rgba(255, 209, 102, 0.6);
+}
+
+.box-glow {
+  box-shadow: 0 0 35px rgba(255, 51, 102, 0.4);
+}
+
+/* Gradient Texts */
+.gradient-rose {
+  background: linear-gradient(135deg, #fff5f7 0%, #ff758c 50%, #ff3366 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-gold {
+  background: linear-gradient(135deg, #fff2cc 0%, #ffd166 50%, #ff9f1c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===================================================================
+   1. SPLASH SCREEN & 3D GIFT BOX
+   =================================================================== */
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: radial-gradient(circle at center, #260c2d 0%, #110619 50%, #060209 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.gift-box-wrapper {
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.gift-box-3d {
+  width: 170px;
+  height: 170px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease;
+  animation: giftFloat 3.2s ease-in-out infinite;
+}
+
+.gift-box-wrapper:hover .gift-box-3d {
+  transform: scale(1.06) rotateY(10deg);
+}
+
+@keyframes giftFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(-2deg);
+  }
+}
+
+.box-body {
+  width: 100%;
+  height: 80%;
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(145deg, #ff2a6d, #d1004b);
+  border-radius: 18px;
+  box-shadow: 0 15px 35px rgba(255, 42, 109, 0.4), inset 0 3px 6px rgba(255, 255, 255, 0.3);
+}
+
+.box-lid {
+  width: 110%;
+  height: 35px;
+  position: absolute;
+  top: 10px;
+  left: -5%;
+  background: linear-gradient(145deg, #ff4b82, #e00052);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  transform-origin: top center;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 10;
+}
+
+/* Ribbons */
+.ribbon-vertical {
+  width: 32px;
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, #ffd166, #ffea85, #ffb703);
+  box-shadow: 0 0 12px rgba(255, 209, 102, 0.7);
+}
+
+.ribbon-horizontal {
+  height: 32px;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(to bottom, #ffd166, #ffea85, #ffb703);
+  box-shadow: 0 0 12px rgba(255, 209, 102, 0.7);
+}
+
+/* Bow on top */
+.gift-bow {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 35px;
+  z-index: 12;
+}
+
+.bow-left, .bow-right {
+  width: 32px;
+  height: 28px;
+  border: 7px solid #ffd166;
+  border-radius: 50% 50% 20% 50%;
+  position: absolute;
+  top: 0;
+  box-shadow: 0 0 14px rgba(255, 209, 102, 0.8);
+}
+
+.bow-left {
+  left: 3px;
+  transform: rotate(-30deg);
+}
+
+.bow-right {
+  right: 3px;
+  border-radius: 50% 50% 50% 20%;
+  transform: rotate(30deg);
+}
+
+.bow-center {
+  width: 18px;
+  height: 18px;
+  background: #ffb703;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px #ffd166;
+}
+
+/* Pulse Glow around gift */
+.gift-pulse-ring {
+  position: absolute;
+  inset: -25px;
+  border-radius: 35px;
+  border: 2px dashed rgba(255, 117, 140, 0.4);
+  animation: pulseRotate 12s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes pulseRotate {
+  0% { transform: rotate(0deg) scale(0.98); opacity: 0.4; }
+  50% { transform: rotate(180deg) scale(1.04); opacity: 0.9; }
+  100% { transform: rotate(360deg) scale(0.98); opacity: 0.4; }
+}
+
+/* ===================================================================
+   2. FLOATING AUDIO CONTROLLER & VISUALIZER
+   =================================================================== */
+.audio-controller-pill {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 900;
+  background: rgba(22, 10, 32, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 117, 140, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 51, 102, 0.2);
+  border-radius: 9999px;
+  padding: 8px 16px 8px 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[dir="rtl"] .audio-controller-pill {
+  right: auto;
+  left: 24px;
+  padding: 8px 8px 8px 16px;
+}
+
+.audio-controller-pill:hover {
+  border-color: rgba(255, 117, 140, 0.7);
+  box-shadow: 0 12px 35px rgba(255, 51, 102, 0.35);
+  transform: translateY(-2px);
+}
+
+.vinyl-disc {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  animation: spinVinyl 6s linear infinite;
+  animation-play-state: paused;
+}
+
+.vinyl-disc.playing {
+  animation-play-state: running;
+}
+
+@keyframes spinVinyl {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Animated Soundwave Equalizer Bars */
+.soundwave {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 18px;
+}
+
+.soundwave-bar {
+  width: 3px;
+  background: linear-gradient(to top, #ff3366, #ffd166);
+  border-radius: 9999px;
+  height: 4px;
+  transition: height 0.2s ease;
+}
+
+.soundwave.playing .soundwave-bar {
+  animation: equalize 1s ease-in-out infinite alternate;
+}
+
+.soundwave.playing .soundwave-bar:nth-child(1) { animation-duration: 0.8s; }
+.soundwave.playing .soundwave-bar:nth-child(2) { animation-duration: 0.5s; animation-delay: 0.15s; }
+.soundwave.playing .soundwave-bar:nth-child(3) { animation-duration: 0.9s; animation-delay: 0.3s; }
+.soundwave.playing .soundwave-bar:nth-child(4) { animation-duration: 0.6s; animation-delay: 0.2s; }
+
+@keyframes equalize {
+  0% { height: 4px; }
+  100% { height: 18px; }
+}
+
+/* ===================================================================
+   3. CINEMATIC REEL & KEN BURNS EFFECT
+   =================================================================== */
+.cinematic-reel-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 580px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 51, 102, 0.25);
+  border: 1px solid rgba(255, 117, 140, 0.3);
+  background: #000000;
+}
+
+@media (max-width: 640px) {
+  .cinematic-reel-frame {
+    aspect-ratio: 4 / 3;
+    max-height: 400px;
+  }
+}
+
+.ken-burns-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 1.2s ease-in-out;
+}
+
+.ken-burns-img.active {
+  opacity: 1;
+  animation: kenBurnsZoom 7s ease-in-out infinite alternate;
+}
+
+@keyframes kenBurnsZoom {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.12) translate(-1.5%, -1.5%);
+  }
+}
+
+/* Cinematic Subtitle Gradient Bar */
+.reel-caption-overlay {
+  position: absolute;
+  bottom: 0;
+  inset-x: 0;
+  padding: 40px 28px 24px;
+  background: linear-gradient(to top, rgba(10, 4, 18, 0.95) 0%, rgba(10, 4, 18, 0.7) 60%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 20;
+}
+
+.reel-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(to right, #ff3366, #ffd166);
+  width: 0%;
+  transition: width 0.1s linear;
+  z-index: 30;
+}
+
+/* ===================================================================
+   4. POLAROID PHOTO GALLERY
+   =================================================================== */
+.polaroid-card {
+  background: #ffffff;
+  padding: 14px 14px 22px;
+  border-radius: 6px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  cursor: pointer;
+  color: #1e1b26;
+}
+
+.polaroid-card::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 20px;
+  background: rgba(255, 235, 180, 0.6);
+  border: 1px dashed rgba(200, 180, 130, 0.5);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.polaroid-card:hover {
+  transform: scale(1.06) rotate(0deg) !important;
+  box-shadow: 0 25px 50px rgba(255, 51, 102, 0.35), 0 0 20px rgba(255, 209, 102, 0.3);
+  z-index: 30;
+}
+
+.polaroid-img-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #110818;
+}
+
+.polaroid-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.polaroid-card:hover .polaroid-img-wrapper img {
+  transform: scale(1.08);
+}
+
+/* ===================================================================
+   5. INTERACTIVE TIMELINE
+   =================================================================== */
+.timeline-stem-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: linear-gradient(to bottom, #ff3366, #ff758c 50%, #ffd166);
+  transform: translateX(-50%);
+  box-shadow: 0 0 15px rgba(255, 51, 102, 0.6);
+}
+
+@media (max-width: 768px) {
+  .timeline-stem-line {
+    left: 28px;
+    transform: none;
+  }
+}
+
+.timeline-node-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffd166;
+  border: 4px solid #160a22;
+  box-shadow: 0 0 14px #ffd166;
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .timeline-node-dot {
+    left: 18px;
+    transform: none;
+  }
+}
+
+/* ===================================================================
+   6. INTERACTIVE LOVE LETTER (3D ENVELOPE)
+   =================================================================== */
+.envelope-wrapper {
+  position: relative;
+  width: 320px;
+  height: 200px;
+  margin: 0 auto;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+@media (min-width: 640px) {
+  .envelope-wrapper {
+    width: 440px;
+    height: 260px;
+  }
+}
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #a71d44, #730e2c);
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.envelope-letter {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  right: 12px;
+  height: 90%;
+  background: #fdfaf6;
+  color: #2b172a;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  z-index: 2;
+}
+
+.envelope-front-pocket {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.envelope-front-pocket::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-style: solid;
+  border-width: 0 160px 120px 160px;
+  border-color: transparent transparent #c22752 transparent;
+  border-radius: 0 0 14px 14px;
+}
+
+@media (min-width: 640px) {
+  .envelope-front-pocket::before {
+    border-width: 0 220px 150px 220px;
+  }
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-style: solid;
+  border-width: 120px 160px 0 160px;
+  border-color: #d82c5d transparent transparent transparent;
+  transform-origin: top center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 4;
+}
+
+@media (min-width: 640px) {
+  .envelope-flap {
+    border-width: 150px 220px 0 220px;
+  }
+}
+
+.envelope-wrapper.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope-wrapper.open .envelope-letter {
+  transform: translateY(-80px);
+}
+
+.wax-seal {
+  position: absolute;
+  top: 95px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  background: radial-gradient(circle, #ffd166, #e6a71e);
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 209, 102, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #730e2c;
+  font-size: 24px;
+  z-index: 5;
+  transition: transform 0.3s ease, opacity 0.4s ease;
+}
+
+.envelope-wrapper:hover .wax-seal {
+  transform: translateX(-50%) scale(1.1);
+}
+
+.envelope-wrapper.open .wax-seal {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.5);
+  pointer-events: none;
+}
+
+/* ===================================================================
+   7. INTERACTIVE BIRTHDAY CAKE & BLOWING CANDLE
+   =================================================================== */
+.cake-container {
+  position: relative;
+  width: 260px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.candle {
+  position: relative;
+  width: 14px;
+  height: 48px;
+  background: repeating-linear-gradient(
+    45deg,
+    #ffd166,
+    #ffd166 6px,
+    #ff3366 6px,
+    #ff3366 12px
+  );
+  border-radius: 6px 6px 0 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+.flame {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 26px;
+  background: radial-gradient(ellipse at bottom, #fff7a1 0%, #ff8c00 65%, #ff3300 100%);
+  border-radius: 50% 50% 20% 20%;
+  box-shadow: 0 0 20px #ff9e00, 0 0 35px #ff3366;
+  animation: flicker 0.7s infinite alternate ease-in-out;
+  transform-origin: bottom center;
+  cursor: pointer;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+@keyframes flicker {
+  0% {
+    transform: translateX(-50%) rotate(-2deg) scale(0.96);
+    box-shadow: 0 0 16px #ff9e00, 0 0 30px #ff3366;
+  }
+  100% {
+    transform: translateX(-50%) rotate(2deg) scale(1.05);
+    box-shadow: 0 0 24px #ffb703, 0 0 45px #ff4b82;
+  }
+}
+
+.flame.extinguished {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.1);
+  pointer-events: none;
+}
+
+/* Smoke rising when candle is blown */
+.smoke {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: rgba(220, 220, 230, 0.7);
+  border-radius: 50%;
+  filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.smoke.rise {
+  animation: smokeRise 1.8s forwards ease-out;
+}
+
+@keyframes smokeRise {
+  0% {
+    opacity: 0.8;
+    transform: translateX(-50%) scale(1) translateY(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateX(-60%) scale(2.2) translateY(-25px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-40%) scale(3.5) translateY(-55px);
+  }
+}
+
+/* Cake Layers */
+.cake-tier-top {
+  width: 140px;
+  height: 55px;
+  background: linear-gradient(135deg, #ff8fa3, #ff4d6d);
+  border-radius: 12px 12px 0 0;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cake-tier-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  inset-x: 0;
+  height: 14px;
+  background: #ffffff;
+  border-radius: 12px 12px 6px 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.cake-tier-bottom {
+  width: 210px;
+  height: 75px;
+  background: linear-gradient(135deg, #ff758c, #c9184a);
+  border-radius: 14px 14px 0 0;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  margin-top: -2px;
+}
+
+.cake-tier-bottom::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  inset-x: 0;
+  height: 18px;
+  background: #ffffff;
+  border-radius: 14px 14px 8px 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.cake-plate {
+  width: 260px;
+  height: 16px;
+  background: linear-gradient(to right, #ffd166, #fff0c2, #ffd166);
+  border-radius: 9999px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  margin-top: -2px;
+}
+
+/* ===================================================================
+   8. MODAL & LIGHTBOX OVERLAYS
+   =================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(7, 3, 12, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  transform: scale(0.92);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1);
+}
+
+/* Pulsing heart icon animation */
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.15); }
+  40% { transform: scale(0.98); }
+  60% { transform: scale(1.1); }
+}
+
+.animate-heartbeat {
+  animation: heartBeat 1.4s ease-in-out infinite;
+}
+
+/* Shimmer animation for badges & buttons */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.btn-shimmer {
+  background-size: 200% 100%;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 51, 102, 1) 0%,
+    rgba(255, 117, 140, 1) 25%,
+    rgba(255, 235, 180, 1) 50%,
+    rgba(255, 117, 140, 1) 75%,
+    rgba(255, 51, 102, 1) 100%
+  );
+  animation: shimmer 4s infinite linear;
+}

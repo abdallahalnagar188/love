@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عيد ميلاد سعيد يا نبض قلبي ❤️ | مفاجأة خاصة</title>
+  
+  <!-- SEO & Social Preview Tags for WhatsApp / Telegram / iMessage -->
+  <meta name="description" content="موقع وتجربة سينمائية تفاعلية صُنعت بكل حب للاحتفال بعيد ميلادكِ السعيد 🎁✨">
+  <meta property="og:title" content="لديكِ مفاجأة خاصة.. افتحي هديتكِ 🎁❤️">
+  <meta property="og:description" content="كل عام وأنتِ الخير لكل عام.. قصة حبنا في تجربة تفاعلية ساحرة ✨">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1200&q=80">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💖</text></svg>">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rose: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+            },
+            love: {
+              pink: '#ff758c',
+              rose: '#ff3366',
+              gold: '#ffd166',
+              dark: '#09060f',
+              card: 'rgba(26, 12, 38, 0.7)'
+            }
+          },
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            tajawal: ['Tajawal', 'sans-serif'],
+            script: ['Dancing Script', 'cursive'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- FontAwesome 6 Icons via CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- GSAP & ScrollTrigger via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- canvas-confetti via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-[#09060f] text-pink-50 relative selection:bg-rose-600 selection:text-white">
+
+  <!-- ===============================================================
+       BACKGROUND FLOATING PARTICLES CANVAS
+       =============================================================== -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- ===============================================================
+       1. INTERACTIVE "GIFT UNWRAP" SPLASH SCREEN (Crucial for Audio)
+       =============================================================== -->
+  <div id="splash-screen">
+    <!-- Ambient glowing backdrop aura -->
+    <div class="absolute w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] bg-rose-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col items-center text-center px-4 max-w-lg">
+      
+      <!-- Top Special Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-400/30 text-rose-300 text-xs sm:text-sm font-medium mb-8 backdrop-blur-md">
+        <i class="fa-solid fa-sparkles text-love-gold animate-pulse"></i>
+        <span id="splash-badge">مفاجأة خاصة جداً من القلب</span>
+        <i class="fa-solid fa-sparkles text-love-gold animate-pulse"></i>
+      </div>
+
+      <!-- 3D Interactive Glowing Gift Box -->
+      <div id="gift-box-btn" class="gift-box-wrapper mb-8 group" title="اضغطي لفتح الهدية">
+        <div class="gift-box-3d">
+          <div class="gift-pulse-ring"></div>
+          <!-- Bow -->
+          <div class="gift-bow">
+            <div class="bow-left"></div>
+            <div class="bow-right"></div>
+            <div class="bow-center"></div>
+          </div>
+          <!-- Lid -->
+          <div id="box-lid" class="box-lid">
+            <div class="ribbon-vertical"></div>
+          </div>
+          <!-- Body -->
+          <div class="box-body">
+            <div class="ribbon-vertical"></div>
+            <div class="ribbon-horizontal"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prompt Text -->
+      <h1 id="splash-title" class="text-2xl sm:text-4xl font-extrabold gradient-rose mb-3 font-cairo">
+        لديكِ مفاجأة خاصة.. اضغطي لفتح هديتكِ 🎁❤️
+      </h1>
+      <p id="splash-subtitle" class="text-pink-200/80 text-sm sm:text-base max-w-md mb-6 leading-relaxed">
+        صُنعت هذه التجربة بكل حب للاحتفال بأجمل وأغلى يوم في السنة
+      </p>
+
+      <!-- Click to Unwrap Button -->
+      <button id="open-gift-btn" class="btn-shimmer px-8 py-3.5 rounded-full font-bold text-white shadow-lg shadow-rose-600/40 hover:scale-105 active:scale-95 transition-all flex items-center gap-3 text-base sm:text-lg">
+        <i class="fa-solid fa-heart animate-heartbeat text-white"></i>
+        <span id="splash-btn-text">افتحي هديتكِ الآن ✨</span>
+        <i class="fa-solid fa-sparkles"></i>
+      </button>
+
+      <!-- Sound Hint -->
+      <p id="splash-sound-hint" class="text-xs text-pink-300/60 mt-6 flex items-center gap-1.5">
+        <i class="fa-solid fa-volume-high text-love-gold"></i>
+        <span>يُفضل رفع مستوى الصوت لتجربة موسيقية سينمائية كاملة</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- ===============================================================
+       2. FLOATING GLASSMORPHIC AUDIO PLAYER & VISUALIZER
+       =============================================================== -->
+  <div id="audio-pill" class="audio-controller-pill hidden sm:flex">
+    <!-- Spinning Album Vinyl -->
+    <div id="vinyl-disc" class="vinyl-disc border-2 border-rose-400/50">
+      <img id="player-album-cover" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=150&q=80" alt="Album Art" class="w-full h-full object-cover">
+    </div>
+
+    <!-- Song Info -->
+    <div class="flex flex-col min-w-[110px] max-w-[140px] overflow-hidden text-right">
+      <span id="player-song-title" class="text-xs font-bold text-pink-100 truncate">Until I Found You</span>
+      <span id="player-artist" class="text-[10px] text-pink-300/70 truncate">أجمل نغمة لعيونك ❤️</span>
+    </div>
+
+    <!-- Animated Equalizer Soundwave -->
+    <div id="soundwave-bars" class="soundwave">
+      <span class="soundwave-bar"></span>
+      <span class="soundwave-bar"></span>
+      <span class="soundwave-bar"></span>
+      <span class="soundwave-bar"></span>
+    </div>
+
+    <!-- Play/Pause Toggle Button -->
+    <button id="music-toggle-btn" class="w-8 h-8 rounded-full bg-rose-500/20 hover:bg-rose-500/40 border border-rose-400/40 text-pink-200 flex items-center justify-center transition-all text-xs" aria-label="تشغيل/إيقاف الموسيقى">
+      <i id="music-toggle-icon" class="fa-solid fa-pause"></i>
+    </button>
+
+    <!-- Mute Button -->
+    <button id="mute-toggle-btn" class="w-8 h-8 rounded-full bg-rose-500/10 hover:bg-rose-500/30 text-pink-300 flex items-center justify-center transition-all text-xs" aria-label="كتم الصوت">
+      <i id="mute-icon" class="fa-solid fa-volume-high"></i>
+    </button>
+
+    <!-- Hidden Audio Element -->
+    <audio id="bg-audio" loop preload="auto"></audio>
+  </div>
+
+  <!-- ===============================================================
+       TOP FLOATING ROMANTIC NAVBAR
+       =============================================================== -->
+  <header class="fixed top-4 inset-x-4 max-w-5xl mx-auto z-40">
+    <nav class="glass-panel rounded-full px-5 py-3 flex items-center justify-between shadow-2xl">
+      <!-- Romantic Brand / Recipient Name -->
+      <a href="#hero" class="flex items-center gap-2 group">
+        <span class="text-xl sm:text-2xl text-rose-500 animate-heartbeat">❤️</span>
+        <span id="nav-brand-name" class="font-bold text-sm sm:text-base tracking-wide gradient-rose">نور & أنا</span>
+      </a>
+
+      <!-- Navigation Links (Smooth Scroll) -->
+      <div class="hidden md:flex items-center gap-6 text-sm font-medium text-pink-200/80">
+        <a href="#hero" class="hover:text-rose-400 transition-colors">الرئيسية</a>
+        <a href="#cinematic-reel" class="hover:text-rose-400 transition-colors">حكايتنا 🎬</a>
+        <a href="#polaroids" class="hover:text-rose-400 transition-colors">ألبوم الذكريات 📸</a>
+        <a href="#timeline" class="hover:text-rose-400 transition-colors">محطاتنا 🌟</a>
+        <a href="#love-letter" class="hover:text-rose-400 transition-colors">رسالتي إليكِ 💌</a>
+        <a href="#birthday-cake" class="hover:text-rose-400 transition-colors">كيكة العيد 🎂</a>
+      </div>
+
+      <!-- Action Button / Confetti Trigger -->
+      <button id="nav-confetti-btn" class="px-4 py-1.5 rounded-full bg-rose-600/30 border border-rose-400/40 text-xs text-pink-100 hover:bg-rose-600/50 hover:scale-105 transition-all flex items-center gap-1.5 shadow-sm">
+        <i class="fa-solid fa-sparkles text-love-gold"></i>
+        <span>احتفال 🎉</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===============================================================
+       SECTION 1: HERO BIRTHDAY CELEBRATION
+       =============================================================== -->
+  <section id="hero" class="min-h-screen pt-32 pb-20 flex flex-col justify-center items-center text-center px-4 relative z-10">
+    <!-- Ambient Glow behind Hero -->
+    <div class="absolute top-1/3 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-rose-600/15 rounded-full blur-[140px] pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto flex flex-col items-center">
+      
+      <!-- Special Day Pill -->
+      <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card text-rose-300 text-xs sm:text-sm font-semibold mb-6 shadow-md border border-rose-400/30 animate-pulse">
+        <i class="fa-solid fa-crown text-love-gold"></i>
+        <span id="hero-badge">اليوم يوم ميلاد ملكة قلبي 👑✨</span>
+        <i class="fa-solid fa-stars text-love-gold"></i>
+      </div>
+
+      <!-- Main Headline with Recipient Name -->
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-black mb-6 tracking-tight leading-tight">
+        <span class="block text-pink-100 font-cairo">عيد ميلاد سعيد يا</span>
+        <span id="hero-recipient-name" class="gradient-rose font-cairo text-glow inline-block mt-2">نـور</span>
+      </h1>
+
+      <!-- Dynamic Vanilla JS Typewriter Subtitle -->
+      <div class="min-h-[56px] sm:min-h-[64px] flex items-center justify-center mb-10 max-w-2xl px-2">
+        <p class="text-lg sm:text-2xl font-medium text-pink-200/90 font-tajawal leading-relaxed">
+          <span id="typewriter-text" class="border-b-2 border-rose-400/60 pb-1"></span>
+          <span class="inline-block w-0.5 h-6 bg-rose-400 animate-pulse align-middle ml-1"></span>
+        </p>
+      </div>
+
+      <!-- Live Counter: Time Since Milestone / Special Date -->
+      <div class="w-full max-w-2xl glass-panel rounded-3xl p-6 sm:p-8 mb-12 relative overflow-hidden">
+        <!-- Subtle inner gold border accent -->
+        <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-love-gold to-transparent opacity-70"></div>
+        
+        <h3 id="counter-title" class="text-sm sm:text-base font-semibold text-pink-200/90 mb-6 flex items-center justify-center gap-2">
+          <i class="fa-solid fa-hourglass-half text-love-gold"></i>
+          <span>الوقت الذي عشته وأنتِ في دنياي محليّاها</span>
+        </h3>
+
+        <!-- Counter Digital Cards -->
+        <div class="grid grid-cols-4 gap-2 sm:gap-4">
+          <!-- Days -->
+          <div class="glass-card rounded-2xl p-3 sm:p-5 flex flex-col items-center">
+            <span id="counter-days" class="text-2xl sm:text-5xl font-black text-rose-400 font-mono">00</span>
+            <span class="text-[11px] sm:text-xs text-pink-200/70 mt-1 font-medium">يوم</span>
+          </div>
+          <!-- Hours -->
+          <div class="glass-card rounded-2xl p-3 sm:p-5 flex flex-col items-center">
+            <span id="counter-hours" class="text-2xl sm:text-5xl font-black text-pink-300 font-mono">00</span>
+            <span class="text-[11px] sm:text-xs text-pink-200/70 mt-1 font-medium">ساعة</span>
+          </div>
+          <!-- Minutes -->
+          <div class="glass-card rounded-2xl p-3 sm:p-5 flex flex-col items-center">
+            <span id="counter-minutes" class="text-2xl sm:text-5xl font-black text-rose-300 font-mono">00</span>
+            <span class="text-[11px] sm:text-xs text-pink-200/70 mt-1 font-medium">دقيقة</span>
+          </div>
+          <!-- Seconds -->
+          <div class="glass-card rounded-2xl p-3 sm:p-5 flex flex-col items-center">
+            <span id="counter-seconds" class="text-2xl sm:text-5xl font-black text-love-gold font-mono">00</span>
+            <span class="text-[11px] sm:text-xs text-pink-200/70 mt-1 font-medium">ثانية</span>
+          </div>
+        </div>
+
+        <p id="counter-subtitle" class="text-xs sm:text-sm text-pink-300/70 mt-5 italic">
+          كل ثانية تمر معكِ هي عمر جديد يُكتب في قلبي
+        </p>
+      </div>
+
+      <!-- Scroll Down Indicator -->
+      <a href="#cinematic-reel" class="inline-flex flex-col items-center gap-2 text-pink-300/70 hover:text-rose-400 transition-colors group">
+        <span class="text-xs font-medium tracking-wider">شاهدي شريط ذكرياتنا</span>
+        <div class="w-8 h-12 rounded-full border-2 border-rose-400/40 flex items-start justify-center p-2 group-hover:border-rose-400">
+          <div class="w-1.5 h-3 bg-rose-400 rounded-full animate-bounce"></div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===============================================================
+       SECTION 2: "OUR CINEMATIC STORY" (Video-Style Animated Reel)
+       =============================================================== -->
+  <section id="cinematic-reel" class="py-24 px-4 relative z-10 max-w-6xl mx-auto">
+    <!-- Section Title -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-400/25 text-rose-300 text-xs font-semibold mb-3">
+        <i class="fa-solid fa-film text-love-gold"></i>
+        <span>شريط الذكريات السينمائي</span>
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-extrabold gradient-rose font-cairo mb-4">
+        حكايتنا في لقطات ساحرة 🎬❤️
+      </h2>
+      <p class="text-pink-200/80 text-sm sm:text-base max-w-xl mx-auto">
+        عرض سينمائي بأسلوب المونتاج والفيديو يستعرض أجمل اللحظات التي رسمت تفاصيل حبنا
+      </p>
+    </div>
+
+    <!-- Cinematic Player Window -->
+    <div class="glass-panel p-3 sm:p-5 rounded-3xl relative overflow-hidden shadow-2xl">
+      <!-- Player Top Bar -->
+      <div class="flex items-center justify-between pb-3 px-3 text-xs text-pink-300/70 border-b border-rose-500/20 mb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-rose-500 inline-block animate-pulse"></span>
+          <span class="font-bold tracking-wider text-pink-100">CINEMATIC LOVE REEL 4K</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="reel-counter-badge" class="font-mono text-love-gold">01 / 06</span>
+          <button id="reel-fullscreen-btn" class="hover:text-rose-300 transition-colors" title="شاشة كاملة">
+            <i class="fa-solid fa-expand"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Reel Video Frame (Ken Burns Crossfade) -->
+      <div id="reel-viewport" class="cinematic-reel-frame">
+        <!-- Progress bar at top of video -->
+        <div id="reel-progress-bar" class="reel-progress-bar"></div>
+
+        <!-- Photos dynamically injected by main.js with Ken Burns effect -->
+        <div id="reel-slides-container" class="relative w-full h-full"></div>
+
+        <!-- Subtitles / Captions Box -->
+        <div class="reel-caption-overlay">
+          <div class="flex items-center gap-2 text-xs text-love-gold font-semibold">
+            <i class="fa-solid fa-calendar-heart"></i>
+            <span id="reel-slide-date">سبتمبر 2023</span>
+            <span>•</span>
+            <span id="reel-slide-location">أول لقاء ☕</span>
+          </div>
+          <h3 id="reel-slide-title" class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white font-cairo text-glow">
+            أول نظرة.. وبداية كل شيء
+          </h3>
+          <p id="reel-slide-caption" class="text-xs sm:text-sm text-pink-100/90 max-w-2xl leading-relaxed">
+            في اليوم الذي التقت فيه أعيننا لأول مرة، شعرت أن العالم كله قد صمت ولم يبقَ إلا ابتسامتكِ.
+          </p>
+        </div>
+      </div>
+
+      <!-- Reel Control Bar -->
+      <div class="flex items-center justify-between pt-4 px-2">
+        <div class="flex items-center gap-3">
+          <button id="reel-prev-btn" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-pink-200 hover:text-white hover:bg-rose-600/40 transition-all" aria-label="الصورة السابقة">
+            <i class="fa-solid fa-backward-step"></i>
+          </button>
+          <button id="reel-play-btn" class="w-12 h-12 rounded-full bg-rose-600 hover:bg-rose-500 text-white flex items-center justify-center shadow-lg shadow-rose-600/50 hover:scale-105 active:scale-95 transition-all" aria-label="تشغيل / إيقاف">
+            <i id="reel-play-icon" class="fa-solid fa-pause"></i>
+          </button>
+          <button id="reel-next-btn" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-pink-200 hover:text-white hover:bg-rose-600/40 transition-all" aria-label="الصورة التالية">
+            <i class="fa-solid fa-forward-step"></i>
+          </button>
+        </div>
+
+        <div class="text-xs text-pink-300/60 hidden sm:block">
+          <i class="fa-solid fa-circle-info mr-1"></i>
+          الصور تتبدل تلقائياً بتأثير Ken Burns المونتاجي
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================================================
+         INTERACTIVE POLAROID GALLERY GRID
+         ============================================================= -->
+    <div id="polaroids" class="pt-20">
+      <div class="text-center mb-10">
+        <h3 class="text-2xl sm:text-3xl font-bold text-pink-100 font-cairo mb-2">
+          ألبوم الذكريات البولارويد 📸
+        </h3>
+        <p class="text-xs sm:text-sm text-pink-300/70">
+          اضغطي على أي صورة لتكبيرها وقراءة الذكرى الجميلة المكتوبة خلفها
+        </p>
+      </div>
+
+      <!-- Polaroid Cards Grid (Populated dynamically from config.js) -->
+      <div id="polaroid-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 px-2 sm:px-6"></div>
+    </div>
+  </section>
+
+  <!-- ===============================================================
+       SECTION 3: INTERACTIVE TIMELINE OF MEMORIES
+       =============================================================== -->
+  <section id="timeline" class="py-24 px-4 relative z-10 max-w-5xl mx-auto">
+    <!-- Section Title -->
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-400/25 text-rose-300 text-xs font-semibold mb-3">
+        <i class="fa-solid fa-timeline text-love-gold"></i>
+        <span>مسار الحب</span>
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-extrabold gradient-rose font-cairo mb-4">
+        محطات محفورة في القلب 🌟
+      </h2>
+      <p class="text-pink-200/80 text-sm sm:text-base max-w-xl mx-auto">
+        كل يوم معكِ هو تاريخ يستحق أن يُروى، وهذه أبرز المحطات التي سكنت الوجدان
+      </p>
+    </div>
+
+    <!-- Vertical Timeline Container -->
+    <div class="relative py-8">
+      <!-- Animated Central Glowing Line -->
+      <div class="timeline-stem-line"></div>
+
+      <!-- Milestone Items (Injected by main.js) -->
+      <div id="timeline-container" class="space-y-12 sm:space-y-16 relative"></div>
+    </div>
+  </section>
+
+  <!-- ===============================================================
+       SECTION 4: ANIMATED LOVE LETTER (Interactive Envelope)
+       =============================================================== -->
+  <section id="love-letter" class="py-24 px-4 relative z-10 max-w-4xl mx-auto">
+    <!-- Section Title -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-400/25 text-rose-300 text-xs font-semibold mb-3">
+        <i class="fa-solid fa-envelope-open-text text-love-gold"></i>
+        <span>رسالة سرية</span>
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-extrabold gradient-rose font-cairo mb-4">
+        رسالة من أعماق القلب 💌
+      </h2>
+      <p class="text-pink-200/80 text-sm sm:text-base max-w-md mx-auto">
+        اضغطي على الختم الذهبي لفتح الظرف وقراءة الرسالة التي كتبتها لكِ
+      </p>
+    </div>
+
+    <!-- 3D Interactive Envelope -->
+    <div class="py-8 flex justify-center">
+      <div id="envelope" class="envelope-wrapper" title="اضغطي لفتح الرسالة">
+        <div class="envelope-back"></div>
+        
+        <!-- Letter Sheet inside -->
+        <div class="envelope-letter flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between border-b border-rose-300/40 pb-2 mb-3">
+              <span class="font-cairo font-bold text-rose-700 text-sm">إلى حبيبتي الغالية ❤️</span>
+              <span class="text-xs text-rose-500 font-mono">100% Love</span>
+            </div>
+            <p class="text-xs sm:text-sm text-gray-700 font-cairo leading-relaxed line-clamp-4">
+              في يوم ميلادكِ، أردتُ أن أكتب لكِ كلماتٍ تليق برقتكِ، رغم أن كل قواميس اللغة تعجز عن التعبير عما يحمله قلبي لكِ...
+            </p>
+          </div>
+          <div class="text-left text-xs font-script font-bold text-rose-800">
+            Click to read full letter ✨
+          </div>
+        </div>
+
+        <div class="envelope-front-pocket"></div>
+        <div class="envelope-flap"></div>
+        
+        <!-- Wax Seal -->
+        <div class="wax-seal">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Letter Full Display Card (Appears after clicking envelope) -->
+    <div id="full-letter-card" class="hidden mt-10 glass-panel rounded-3xl p-6 sm:p-10 border border-rose-400/30 shadow-2xl relative overflow-hidden">
+      <!-- Watermark Heart -->
+      <div class="absolute -bottom-10 -right-10 text-rose-600/10 text-9xl pointer-events-none">
+        <i class="fa-solid fa-heart"></i>
+      </div>
+
+      <div class="relative z-10">
+        <!-- Letter Header -->
+        <div class="flex items-center justify-between border-b border-rose-500/20 pb-4 mb-6">
+          <h3 id="letter-greeting" class="text-xl sm:text-2xl font-bold gradient-rose font-cairo">
+            إلى أميرتي ونبض فؤادي.. نور عيني ❤️
+          </h3>
+          <span class="text-xs px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-400/30">
+            رسالة خاصة 🌹
+          </span>
+        </div>
+
+        <!-- Letter Body Paragraphs -->
+        <div id="letter-paragraphs" class="space-y-4 text-sm sm:text-base text-pink-100/90 leading-loose font-tajawal text-justify"></div>
+
+        <!-- Letter Signature -->
+        <div class="mt-8 pt-6 border-t border-rose-500/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span id="letter-closing" class="text-sm text-pink-300 font-semibold font-cairo">حبيبي للأبد،</span>
+          <div class="flex items-center gap-3">
+            <span id="letter-signature" class="font-cairo font-bold text-love-gold text-base sm:text-lg">
+              محبكِ الذي لا ينتهي عشقه لكِ 💍❤️
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============================================================
+       SECTION 5: FINALE & "MAKE A WISH" INTERACTIVE BIRTHDAY CAKE
+       =============================================================== -->
+  <section id="birthday-cake" class="py-24 px-4 relative z-10 max-w-4xl mx-auto text-center">
+    <!-- Section Title -->
+    <div class="mb-14">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-400/25 text-rose-300 text-xs font-semibold mb-3">
+        <i class="fa-solid fa-cake-candles text-love-gold"></i>
+        <span>الختام الساحر</span>
+      </div>
+      <h2 id="cake-section-title" class="text-3xl sm:text-5xl font-extrabold gradient-rose font-cairo mb-4">
+        اطفئي الشمعة وتمني أمنية 🎂✨
+      </h2>
+      <p id="cake-section-subtitle" class="text-pink-200/80 text-sm sm:text-base max-w-lg mx-auto">
+        أغمضي عينيكِ، فكري في أمنية جميلة من قلبكِ، ثم اضغطي على الشمعة لتنطفئ وتتحقق بإذن الله!
+      </p>
+    </div>
+
+    <!-- Interactive Birthday Cake Graphic -->
+    <div class="cake-container mb-10">
+      <!-- Candle & Flame -->
+      <div class="candle">
+        <!-- Interactive Flame -->
+        <div id="cake-flame" class="flame" title="اضغطي لإطفاء الشمعة"></div>
+        <!-- Smoke puff when blown out -->
+        <div id="cake-smoke" class="smoke"></div>
+      </div>
+
+      <!-- Top Cake Tier -->
+      <div class="cake-tier-top">
+        <!-- Decorative sprinkles / cherries -->
+        <div class="flex justify-around items-center h-full px-4 text-xs">
+          <span>🍓</span>
+          <span>✨</span>
+          <span>🍓</span>
+        </div>
+      </div>
+
+      <!-- Bottom Cake Tier -->
+      <div class="cake-tier-bottom">
+        <div class="flex justify-around items-center h-full px-6 text-sm">
+          <span>💖</span>
+          <span>🍓</span>
+          <span>💖</span>
+          <span>🍓</span>
+        </div>
+      </div>
+
+      <!-- Cake Plate -->
+      <div class="cake-plate"></div>
+    </div>
+
+    <!-- Blow Candle Button -->
+    <button id="blow-candle-btn" class="btn-shimmer px-8 py-4 rounded-full font-bold text-white shadow-xl shadow-rose-600/40 hover:scale-105 active:scale-95 transition-all text-base sm:text-lg inline-flex items-center gap-3">
+      <i class="fa-solid fa-wind animate-pulse"></i>
+      <span id="cake-btn-text">اطفي الشمعة واتمني أمنية 🎂✨</span>
+      <i class="fa-solid fa-sparkles text-love-gold"></i>
+    </button>
+  </section>
+
+  <!-- ===============================================================
+       SECRET WISH GRANTED MODAL (Pops after blowing candle)
+       =============================================================== -->
+  <div id="wish-granted-modal" class="modal-overlay">
+    <div class="modal-content glass-panel p-6 sm:p-10 rounded-3xl max-w-lg w-full text-center relative border border-rose-400/40 shadow-2xl">
+      <!-- Close button -->
+      <button id="close-wish-modal-btn" class="absolute top-4 left-4 sm:top-5 sm:left-5 w-9 h-9 rounded-full bg-rose-500/20 hover:bg-rose-500/40 text-pink-200 flex items-center justify-center transition-all text-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Celebration Icon -->
+      <div class="w-20 h-20 mx-auto rounded-full bg-rose-500/20 border-2 border-rose-400/50 flex items-center justify-center text-4xl mb-6 shadow-lg shadow-rose-600/30">
+        🎉
+      </div>
+
+      <!-- Modal Content -->
+      <h3 id="wish-modal-title" class="text-2xl sm:text-3xl font-extrabold gradient-rose font-cairo mb-4">
+        أمنيتكِ مجابة ومحفوظة في قلبي! 🎉❤️
+      </h3>
+      <p id="wish-modal-message" class="text-pink-100/90 text-sm sm:text-base leading-relaxed mb-6 font-tajawal">
+        جعل الله كل أيامكِ فرحاً لا ينتهي، وأعوامكِ كلها نوراً وحباً. أعدكِ أن أبذل كل ما أستطيع لأكون دائماً سبباً في ابتسامتكِ.
+      </p>
+
+      <!-- Secret Note Box -->
+      <div class="glass-card p-4 rounded-2xl border border-love-gold/40 mb-6 bg-love-gold/5">
+        <p id="wish-secret-note" class="text-xs sm:text-sm text-love-gold font-semibold font-cairo">
+          ملاحظة سرية: أنتِ أجمل أمنية تحققت في حياتي أنا! 🌹✨
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <button id="replay-fireworks-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white text-sm font-bold shadow-lg transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-sparkles text-love-gold"></i>
+          <span>إطلاق الألعاب النارية مجدداً 🎆</span>
+        </button>
+        <button id="relight-candle-btn" class="w-full sm:w-auto px-6 py-2.5 rounded-full glass-card hover:bg-rose-600/30 text-pink-200 text-sm font-semibold transition-all">
+          إشعال الشمعة مرة أخرى 🕯️
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===============================================================
+       PHOTO LIGHTBOX MODAL
+       =============================================================== -->
+  <div id="lightbox-modal" class="modal-overlay">
+    <div class="modal-content max-w-4xl w-full flex flex-col items-center relative">
+      <!-- Close button -->
+      <button id="close-lightbox-btn" class="absolute -top-12 left-0 text-white/80 hover:text-white text-2xl" aria-label="إغلاق">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Lightbox Image & Caption Card -->
+      <div class="glass-panel p-3 rounded-2xl overflow-hidden w-full shadow-2xl">
+        <div class="relative w-full max-h-[75vh] flex items-center justify-center bg-black/60 rounded-xl overflow-hidden">
+          <img id="lightbox-img" src="" alt="Memory Photo" class="max-h-[75vh] w-auto max-w-full object-contain">
+        </div>
+        
+        <div class="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <h4 id="lightbox-title" class="text-lg font-bold text-pink-100 font-cairo">عنوان الذكرى</h4>
+            <p id="lightbox-caption" class="text-xs sm:text-sm text-pink-300/80 mt-1 max-w-xl">وصف الصورة والذكرى الجميلة</p>
+          </div>
+          <div class="text-left">
+            <span id="lightbox-date" class="text-xs px-3 py-1 rounded-full bg-rose-500/20 text-love-gold border border-love-gold/30 font-mono">تاريخ الصورة</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===============================================================
+       ROMANTIC FOOTER
+       =============================================================== -->
+  <footer class="py-12 px-4 relative z-10 border-t border-rose-500/20 text-center text-xs text-pink-300/70">
+    <div class="max-w-md mx-auto flex flex-col items-center gap-3">
+      <div class="text-2xl text-rose-500 animate-heartbeat">❤️</div>
+      <p id="footer-text" class="font-cairo">
+        صُنعت هذه المفاجأة بكل نبضة حب خصيصاً لأجلكِ يا <span id="footer-name" class="text-rose-400 font-bold">نور</span>
+      </p>
+      <p class="text-[11px] text-pink-300/50">
+        Happy Birthday & Forever Love Story • 2026
+      </p>
+      <!-- Back to Top -->
+      <a href="#hero" class="mt-3 text-pink-400 hover:text-rose-300 transition-colors flex items-center gap-1.5 text-xs">
+        <i class="fa-solid fa-arrow-up"></i>
+        <span>العودة للأعلى</span>
+      </a>
+    </div>
+  </footer>
+
+  <!-- ===============================================================
+       SCRIPTS
+       =============================================================== -->
+  <script src="js/config.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
