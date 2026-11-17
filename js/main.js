@@ -308,17 +308,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tabDays = document.getElementById('counter-tab-days');
     const tabDetailed = document.getElementById('counter-tab-detailed');
-    const tabNext = document.getElementById('counter-tab-next');
 
-    let currentMode = 'days'; // 'days', 'detailed', 'next'
+    let currentMode = 'days'; // 'days', 'detailed'
 
     function setTabStyles(activeTab) {
-      [tabDays, tabDetailed, tabNext].forEach(tab => {
+      [tabDays, tabDetailed].forEach(tab => {
         if (!tab) return;
         if (tab === activeTab) {
-          tab.className = 'px-3 py-1 rounded-full font-semibold transition-all bg-rose-600 text-white shadow-sm';
+          tab.className = 'px-4 py-1 rounded-full font-semibold transition-all bg-rose-600 text-white shadow-sm';
         } else {
-          tab.className = 'px-3 py-1 rounded-full font-semibold transition-all text-pink-300 hover:text-white';
+          tab.className = 'px-4 py-1 rounded-full font-semibold transition-all text-pink-300 hover:text-white';
         }
       });
     }
@@ -334,13 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
       tabDetailed.addEventListener('click', () => {
         currentMode = 'detailed';
         setTabStyles(tabDetailed);
-        updateCounter();
-      });
-    }
-    if (tabNext) {
-      tabNext.addEventListener('click', () => {
-        currentMode = 'next';
-        setTabStyles(tabNext);
         updateCounter();
       });
     }
@@ -374,24 +366,9 @@ document.addEventListener('DOMContentLoaded', () => {
       let prevMonthDate = new Date(now.getFullYear(), now.getMonth(), 0);
       let days = currentDay >= birthDay ? (currentDay - birthDay) : (prevMonthDate.getDate() - birthDay + currentDay);
 
-      // Next Birthday Countdown (25 April)
-      let nextBirthday = new Date(now.getFullYear(), birthMonth, birthDay);
-      if (now > nextBirthday) {
-        nextBirthday = new Date(now.getFullYear() + 1, birthMonth, birthDay);
-      }
-      let nextDiff = nextBirthday - now;
-      let nextDays = Math.floor(nextDiff / (1000 * 60 * 60 * 24));
-      let nextHours = Math.floor((nextDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      let nextMins = Math.floor((nextDiff % (1000 * 60 * 60)) / (1000 * 60));
-      let nextSecs = Math.floor((nextDiff % (1000 * 60)) / 1000);
-
       // Update Top Badge
       if (ageBadgeEl) {
-        if (currentMode === 'next') {
-          ageBadgeEl.textContent = `🎉 متبقي على عيد ميلاد فاطمة القادم (25 أبريل): ${nextDays} يوماً و ${nextHours} ساعة! ✨`;
-        } else {
-          ageBadgeEl.textContent = `عمر فاطمة الجميل: ${years} سنة و ${months} شهور و ${days} يوماً من النور والرقة ✨`;
-        }
+        ageBadgeEl.textContent = `عمر فاطمة الجميل: ${years} سنة و ${months} شهور و ${days} يوماً من النور والرقة ✨`;
       }
 
       // Render Cards based on Mode
@@ -417,17 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (hoursEl) hoursEl.textContent = String(months).padStart(2, '0');
         if (minutesEl) minutesEl.textContent = String(days).padStart(2, '0');
         if (secondsEl) secondsEl.textContent = String(remSeconds).padStart(2, '0');
-      } else if (currentMode === 'next') {
-        // Mode 3: Next Birthday Countdown
-        if (unit1) unit1.textContent = 'يوم متبقي';
-        if (unit2) unit2.textContent = 'ساعة';
-        if (unit3) unit3.textContent = 'دقيقة';
-        if (unit4) unit4.textContent = 'ثانية';
-
-        if (daysEl) daysEl.textContent = String(nextDays);
-        if (hoursEl) hoursEl.textContent = String(nextHours).padStart(2, '0');
-        if (minutesEl) minutesEl.textContent = String(nextMins).padStart(2, '0');
-        if (secondsEl) secondsEl.textContent = String(nextSecs).padStart(2, '0');
       }
     }
 
