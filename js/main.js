@@ -216,8 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const footerNameEl = document.getElementById('footer-name');
       const heroBadgeEl = document.getElementById('hero-badge');
 
+      const senderName = config.sender?.name || 'كريم';
       if (heroNameEl) heroNameEl.textContent = recipientName;
-      if (navBrandEl) navBrandEl.textContent = `${recipientName} & أنا ❤️`;
+      if (navBrandEl) navBrandEl.textContent = config.coupleNames || `${recipientName} & ${senderName} ❤️`;
       if (footerNameEl) footerNameEl.textContent = recipientName;
       if (heroBadgeEl && config.recipient.heroBadge) heroBadgeEl.textContent = config.recipient.heroBadge;
     }
