@@ -48,9 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const particleEngine = new RomanticParticleSystem('particles-canvas');
 
   // -----------------------------------------------------------------
-  // 3. Centralized Audio Player with Robust Fallback
+  // 3. Centralized Audio Player with Robust Fallback & Video Soundtrack
   // -----------------------------------------------------------------
   const audioElement = document.getElementById('bg-audio');
+  const videoAudioElement = document.getElementById('bg-video-audio');
   const vinylDisc = document.getElementById('vinyl-disc');
   const soundwaveBars = document.getElementById('soundwave-bars');
   const musicToggleBtn = document.getElementById('music-toggle-btn');
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const muteIcon = document.getElementById('mute-icon');
 
   let isPlaying = false;
-  let hasTriedFallback = false;
+  let activeAudio = audioElement;
 
   // Setup song info in pill
   if (config.music) {
@@ -67,25 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const artistEl = document.getElementById('player-artist');
     const albumCoverEl = document.getElementById('player-album-cover');
 
-    if (titleEl) titleEl.textContent = config.music.songTitle || 'Romantic Song';
-    if (artistEl) artistEl.textContent = config.music.artistName || 'Happy Birthday';
+    if (titleEl) titleEl.textContent = config.music.songTitle || 'نغمة حبنا';
+    if (artistEl) artistEl.textContent = config.music.artistName || 'أجمل نغمة لعيونك ❤️';
     if (albumCoverEl && config.music.albumCover) albumCoverEl.src = config.music.albumCover;
 
-    // Set initial source to local path
-    audioElement.src = config.music.localSongPath || 'assets/music/song.mp3';
-  }
-
-  // Handle audio error -> automatically switch to high-quality fallback URL
-  audioElement.addEventListener('error', () => {
-    if (!hasTriedFallback && config.music && config.music.fallbackSongUrl) {
-      console.log('Local song not found or could not load, switching to fallback romantic audio...');
-      hasTriedFallback = true;
-      audioElement.src = config.music.fallbackSongUrl;
-      if (isPlaying) {
-        audioElement.play().catch(e => console.log('Audio playback prevented', e));
-      }
+    if (videoAudioElement && config.music.fallbackSongUrl) {
+      videoAudioElement.src = config.music.fallbackSongUrl;
     }
-  });
+  }
 
   function updateAudioUI(playing) {
     isPlaying = playing;
@@ -107,17 +97,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function playMusic() {
-    audioElement.play()
+    activeAudio.play()
       .then(() => updateAudioUI(true))
       .catch(err => {
-        console.log('Autoplay blocked or audio failed:', err);
-        // Try fallback if not yet attempted
-        if (!hasTriedFallback && config.music && config.music.fallbackSongUrl) {
-          hasTriedFallback = true;
-          audioElement.src = config.music.fallbackSongUrl;
-          audioElement.play()
+        console.log('Primary audio play attempt:', err);
+        if (videoAudioElement && activeAudio !== videoAudioElement) {
+          activeAudio = videoAudioElement;
+          videoAudioElement.play()
             .then(() => updateAudioUI(true))
-            .catch(e => updateAudioUI(false));
+            .catch(e => {
+              console.log('Video audio play attempt:', e);
+              updateAudioUI(false);
+            });
         } else {
           updateAudioUI(false);
         }
@@ -126,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function pauseMusic() {
     audioElement.pause();
+    if (videoAudioElement) videoAudioElement.pause();
     updateAudioUI(false);
   }
 
@@ -141,8 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (muteToggleBtn) {
     muteToggleBtn.addEventListener('click', () => {
-      audioElement.muted = !audioElement.muted;
-      if (audioElement.muted) {
+      const newMuted = !audioElement.muted;
+      audioElement.muted = newMuted;
+      if (videoAudioElement) videoAudioElement.muted = newMuted;
+      if (newMuted) {
         muteIcon.className = 'fa-solid fa-volume-xmark text-rose-400';
       } else {
         muteIcon.className = 'fa-solid fa-volume-high text-pink-300';

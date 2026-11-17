@@ -161,8 +161,14 @@
       <i id="mute-icon" class="fa-solid fa-volume-high"></i>
     </button>
 
-    <!-- Hidden Audio Element -->
-    <audio id="bg-audio" loop preload="auto"></audio>
+    <!-- Hidden Audio / Video Media Elements for Universal Sound Decoding -->
+    <audio id="bg-audio" loop preload="auto" playsinline>
+      <source src="assets/music/song.mp4" type="audio/mp4">
+      <source src="assets/music/song.m4a" type="audio/mp4">
+      <source src="assets/images/7c7d917d-3da4-4555-973a-2e9efc0d4c3f.mp4" type="video/mp4">
+      <source src="assets/music/song.mp3" type="audio/mpeg">
+    </audio>
+    <video id="bg-video-audio" src="assets/images/7c7d917d-3da4-4555-973a-2e9efc0d4c3f.mp4" loop playsinline style="display:none;"></video>
   </div>
 
   <!-- ===============================================================
