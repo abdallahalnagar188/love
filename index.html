@@ -597,8 +597,9 @@
 
       <!-- Lightbox Image & Caption Card -->
       <div class="glass-panel p-3 rounded-2xl overflow-hidden w-full shadow-2xl">
-        <div class="relative w-full max-h-[75vh] flex items-center justify-center bg-black/60 rounded-xl overflow-hidden">
+        <div id="lightbox-media-container" class="relative w-full max-h-[75vh] flex items-center justify-center bg-black/60 rounded-xl overflow-hidden">
           <img id="lightbox-img" src="" alt="Memory Photo" class="max-h-[75vh] w-auto max-w-full object-contain">
+          <video id="lightbox-video" src="" class="max-h-[75vh] w-auto max-w-full object-contain hidden" controls playsinline></video>
         </div>
         
         <div class="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">

@@ -407,10 +407,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function initCinematicReel() {
     if (!reelContainer || photos.length === 0) return;
 
-    // Render image elements with Ken Burns styles
-    reelContainer.innerHTML = photos.map((item, idx) => `
-      <img src="${item.src}" alt="${item.title}" class="ken-burns-img ${idx === 0 ? 'active' : ''}" data-index="${idx}">
-    `).join('');
+    // Render image/video elements with Ken Burns styles
+    reelContainer.innerHTML = photos.map((item, idx) => {
+      const isVideo = item.src && item.src.toLowerCase().endsWith('.mp4');
+      if (isVideo) {
+        return `<video src="${item.src}" class="ken-burns-img ${idx === 0 ? 'active' : ''}" data-index="${idx}" playsinline muted loop autoplay></video>`;
+      }
+      return `<img src="${item.src}" alt="${item.title}" class="ken-burns-img ${idx === 0 ? 'active' : ''}" data-index="${idx}">`;
+    }).join('');
 
     updateReelUI(0);
     startReelTimer();
@@ -536,10 +540,19 @@ document.addEventListener('DOMContentLoaded', () => {
   function initPolaroidGrid() {
     if (!polaroidGrid || photos.length === 0) return;
 
-    polaroidGrid.innerHTML = photos.map((item, idx) => `
+    polaroidGrid.innerHTML = photos.map((item, idx) => {
+      const isVideo = item.src && item.src.toLowerCase().endsWith('.mp4');
+      return `
       <div class="polaroid-card group" style="transform: rotate(${item.rotation || '0deg'});" data-index="${idx}">
-        <div class="polaroid-img-wrapper">
-          <img src="${item.src}" alt="${item.title}" loading="lazy">
+        <div class="polaroid-img-wrapper relative">
+          ${isVideo ? `
+            <video src="${item.src}" class="w-full h-full object-cover" muted loop playsinline autoplay></video>
+            <div class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-black/60 text-[10px] text-white flex items-center gap-1 backdrop-blur-sm z-10">
+              <i class="fa-solid fa-video text-rose-400"></i> فيديو
+            </div>
+          ` : `
+            <img src="${item.src}" alt="${item.title}" loading="lazy">
+          `}
         </div>
         <div class="pt-4 text-center">
           <h4 class="font-cairo font-bold text-sm text-gray-900 group-hover:text-rose-600 transition-colors">${item.title}</h4>
@@ -547,7 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="inline-block mt-3 text-[11px] font-semibold text-rose-500 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">${item.date}</span>
         </div>
       </div>
-    `).join('');
+    `;}).join('');
 
     // Attach click to open Lightbox
     polaroidGrid.querySelectorAll('.polaroid-card').forEach(card => {
@@ -562,7 +575,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const item = photos[index];
     if (!item || !lightboxModal) return;
 
-    if (lightboxImg) lightboxImg.src = item.src;
+    const isVideo = item.src && item.src.toLowerCase().endsWith('.mp4');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxVideo = document.getElementById('lightbox-video');
+
+    if (isVideo) {
+      if (lightboxImg) lightboxImg.classList.add('hidden');
+      if (lightboxVideo) {
+        lightboxVideo.classList.remove('hidden');
+        lightboxVideo.src = item.src;
+        lightboxVideo.play().catch(e => console.log(e));
+      }
+    } else {
+      if (lightboxVideo) {
+        lightboxVideo.pause();
+        lightboxVideo.classList.add('hidden');
+      }
+      if (lightboxImg) {
+        lightboxImg.classList.remove('hidden');
+        lightboxImg.src = item.src;
+      }
+    }
+
     if (lightboxTitle) lightboxTitle.textContent = item.title;
     if (lightboxCaption) lightboxCaption.textContent = item.caption;
     if (lightboxDate) lightboxDate.textContent = `${item.date} • ${item.location}`;
@@ -571,7 +605,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function closeLightbox() {
-    if (lightboxModal) lightboxModal.classList.remove('active');
+    if (lightboxModal) {
+      lightboxModal.classList.remove('active');
+      const lightboxVideo = document.getElementById('lightbox-video');
+      if (lightboxVideo) {
+        lightboxVideo.pause();
+      }
+    }
   }
 
   if (closeLightboxBtn) closeLightboxBtn.addEventListener('click', closeLightbox);
