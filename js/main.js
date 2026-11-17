@@ -291,34 +291,143 @@ document.addEventListener('DOMContentLoaded', () => {
   populateDynamicConfig();
 
   // -----------------------------------------------------------------
-  // 6. Live Relationship / Birthday Countdown Timer
+  // 6. Live Birthday & Age Counter for Fatma (25/4/2004)
   // -----------------------------------------------------------------
   function startLiveCounter() {
-    const startDate = new Date(config.specialDate || "2023-09-14T20:00:00").getTime();
+    const birthdate = new Date(config.specialDate || "2004-04-25T00:00:00");
     const daysEl = document.getElementById('counter-days');
     const hoursEl = document.getElementById('counter-hours');
     const minutesEl = document.getElementById('counter-minutes');
     const secondsEl = document.getElementById('counter-seconds');
+    const ageBadgeEl = document.getElementById('counter-age-badge');
+    const unit1 = document.getElementById('label-unit-1');
+    const unit2 = document.getElementById('label-unit-2');
+    const unit3 = document.getElementById('label-unit-3');
+    const unit4 = document.getElementById('label-unit-4');
+
+    const tabDays = document.getElementById('counter-tab-days');
+    const tabDetailed = document.getElementById('counter-tab-detailed');
+    const tabNext = document.getElementById('counter-tab-next');
+
+    let currentMode = 'days'; // 'days', 'detailed', 'next'
+
+    function setTabStyles(activeTab) {
+      [tabDays, tabDetailed, tabNext].forEach(tab => {
+        if (!tab) return;
+        if (tab === activeTab) {
+          tab.className = 'px-3 py-1 rounded-full font-semibold transition-all bg-rose-600 text-white shadow-sm';
+        } else {
+          tab.className = 'px-3 py-1 rounded-full font-semibold transition-all text-pink-300 hover:text-white';
+        }
+      });
+    }
+
+    if (tabDays) {
+      tabDays.addEventListener('click', () => {
+        currentMode = 'days';
+        setTabStyles(tabDays);
+        updateCounter();
+      });
+    }
+    if (tabDetailed) {
+      tabDetailed.addEventListener('click', () => {
+        currentMode = 'detailed';
+        setTabStyles(tabDetailed);
+        updateCounter();
+      });
+    }
+    if (tabNext) {
+      tabNext.addEventListener('click', () => {
+        currentMode = 'next';
+        setTabStyles(tabNext);
+        updateCounter();
+      });
+    }
 
     function updateCounter() {
-      const now = Date.now();
-      let diff = Math.abs(now - startDate);
+      const now = new Date();
+      const birthTime = birthdate.getTime();
+      let totalDiff = Math.abs(now.getTime() - birthTime);
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      diff -= days * (1000 * 60 * 60 * 24);
+      // Total days count
+      const totalDays = Math.floor(totalDiff / (1000 * 60 * 60 * 24));
+      const remHours = Math.floor((totalDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const remMinutes = Math.floor((totalDiff % (1000 * 60 * 60)) / (1000 * 60));
+      const remSeconds = Math.floor((totalDiff % (1000 * 60)) / 1000);
 
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      diff -= hours * (1000 * 60 * 60);
+      // Detailed Years, Months, Days breakdown
+      let years = now.getFullYear() - birthdate.getFullYear();
+      let birthMonth = birthdate.getMonth();
+      let currentMonth = now.getMonth();
+      let birthDay = birthdate.getDate();
+      let currentDay = now.getDate();
 
-      const minutes = Math.floor(diff / (1000 * 60));
-      diff -= minutes * (1000 * 60);
+      let months = currentMonth - birthMonth;
+      if (currentDay < birthDay) {
+        months--;
+      }
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+      let prevMonthDate = new Date(now.getFullYear(), now.getMonth(), 0);
+      let days = currentDay >= birthDay ? (currentDay - birthDay) : (prevMonthDate.getDate() - birthDay + currentDay);
 
-      const seconds = Math.floor(diff / 1000);
+      // Next Birthday Countdown (25 April)
+      let nextBirthday = new Date(now.getFullYear(), birthMonth, birthDay);
+      if (now > nextBirthday) {
+        nextBirthday = new Date(now.getFullYear() + 1, birthMonth, birthDay);
+      }
+      let nextDiff = nextBirthday - now;
+      let nextDays = Math.floor(nextDiff / (1000 * 60 * 60 * 24));
+      let nextHours = Math.floor((nextDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      let nextMins = Math.floor((nextDiff % (1000 * 60 * 60)) / (1000 * 60));
+      let nextSecs = Math.floor((nextDiff % (1000 * 60)) / 1000);
 
-      if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
-      if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
-      if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
-      if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+      // Update Top Badge
+      if (ageBadgeEl) {
+        if (currentMode === 'next') {
+          ageBadgeEl.textContent = `🎉 متبقي على عيد ميلاد فاطمة القادم (25 أبريل): ${nextDays} يوماً و ${nextHours} ساعة! ✨`;
+        } else {
+          ageBadgeEl.textContent = `عمر فاطمة الجميل: ${years} سنة و ${months} شهور و ${days} يوماً من النور والرقة ✨`;
+        }
+      }
+
+      // Render Cards based on Mode
+      if (currentMode === 'days') {
+        // Mode 1: Total Days (Matches user screenshot: 8241+ Days)
+        if (unit1) unit1.textContent = 'يوم';
+        if (unit2) unit2.textContent = 'ساعة';
+        if (unit3) unit3.textContent = 'دقيقة';
+        if (unit4) unit4.textContent = 'ثانية';
+
+        if (daysEl) daysEl.textContent = String(totalDays);
+        if (hoursEl) hoursEl.textContent = String(remHours).padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = String(remMinutes).padStart(2, '0');
+        if (secondsEl) secondsEl.textContent = String(remSeconds).padStart(2, '0');
+      } else if (currentMode === 'detailed') {
+        // Mode 2: Years, Months, Days, Seconds
+        if (unit1) unit1.textContent = 'سنة';
+        if (unit2) unit2.textContent = 'شهر';
+        if (unit3) unit3.textContent = 'يوم';
+        if (unit4) unit4.textContent = 'ثانية';
+
+        if (daysEl) daysEl.textContent = String(years);
+        if (hoursEl) hoursEl.textContent = String(months).padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = String(days).padStart(2, '0');
+        if (secondsEl) secondsEl.textContent = String(remSeconds).padStart(2, '0');
+      } else if (currentMode === 'next') {
+        // Mode 3: Next Birthday Countdown
+        if (unit1) unit1.textContent = 'يوم متبقي';
+        if (unit2) unit2.textContent = 'ساعة';
+        if (unit3) unit3.textContent = 'دقيقة';
+        if (unit4) unit4.textContent = 'ثانية';
+
+        if (daysEl) daysEl.textContent = String(nextDays);
+        if (hoursEl) hoursEl.textContent = String(nextHours).padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = String(nextMins).padStart(2, '0');
+        if (secondsEl) secondsEl.textContent = String(nextSecs).padStart(2, '0');
+      }
     }
 
     updateCounter();
