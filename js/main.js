@@ -228,16 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.documentElement.setAttribute('dir', config.direction);
     }
 
-    // Counter Titles
-    if (config.counterTitle) {
-      const el = document.getElementById('counter-title');
-      if (el) el.innerHTML = `<i class="fa-solid fa-hourglass-half text-love-gold"></i> <span>${config.counterTitle}</span>`;
-    }
-    if (config.counterSubtitle) {
-      const el = document.getElementById('counter-subtitle');
-      if (el) el.textContent = config.counterSubtitle;
-    }
-
     // Love Letter
     if (config.loveLetter) {
       const greetingEl = document.getElementById('letter-greeting');
@@ -292,116 +282,53 @@ document.addEventListener('DOMContentLoaded', () => {
   populateDynamicConfig();
 
   // -----------------------------------------------------------------
-  // 6. Live Birthday & Age Counter for Fatma (25/4/2004)
+  // 6. Interactive Love Notes Generator (نبضات حب من كريم لـ فاطمة)
   // -----------------------------------------------------------------
-  function startLiveCounter() {
-    const birthdate = new Date(config.specialDate || "2004-04-25T00:00:00");
-    const daysEl = document.getElementById('counter-days');
-    const hoursEl = document.getElementById('counter-hours');
-    const minutesEl = document.getElementById('counter-minutes');
-    const secondsEl = document.getElementById('counter-seconds');
-    const ageBadgeEl = document.getElementById('counter-age-badge');
-    const unit1 = document.getElementById('label-unit-1');
-    const unit2 = document.getElementById('label-unit-2');
-    const unit3 = document.getElementById('label-unit-3');
-    const unit4 = document.getElementById('label-unit-4');
+  function initLoveNotesGenerator() {
+    const dynamicNoteEl = document.getElementById('dynamic-love-note');
+    const nextNoteBtn = document.getElementById('next-note-btn');
 
-    const tabDays = document.getElementById('counter-tab-days');
-    const tabDetailed = document.getElementById('counter-tab-detailed');
+    const loveNotes = [
+      "يا فاطمة، كل يوم بيعدي وانتي معايا بتأكد أكتر إني محظوظ بيكي وإنك أجمل هدية في عمري كله ❤️",
+      "عايز أقولك إنك أعظم انتصاراتي وأحلى وأجمل حاجة حصلتلي في حياتي كلها يا روحي 💍✨",
+      "وجودك فارقلي في كل تفصيلة في حياتي، وانتي معايا بكون مطمن وبحس بالأمان الحقيقي 🏡💖",
+      "مهما حاولت أوصف قد إيه أنا بحبك مش هعرف.. بس أنا من غيرك بتوه بجد يا فاطمة 🥹❤️",
+      "العين شافت كتير بس قلبي بجد ما حبش غيرك ولا هيحب غيرك والله يا روحي 🫂❤️",
+      "بما إني كل يوم بعبرلك عن مشاعري، حبيت أجمع ذكرياتنا سوا بطريقة كريتيف تفرح قلبك يا بطوطة ✨",
+      "ربنا يخليكي ليا ويديمك في حياتي يا فاطمة يا كل حياتي ودنيتي كلها.. حبيبك كريم 🌎❤️",
+      "ضحكتكِ وابتسامتكِ بتنوّر لي الدنيا كلها، وأنتِ السند والأمان اللي عشت عمري كله بتمنى ألاقيه 👑💖"
+    ];
 
-    let currentMode = 'days'; // 'days', 'detailed'
+    let currentNoteIndex = 0;
 
-    function setTabStyles(activeTab) {
-      [tabDays, tabDetailed].forEach(tab => {
-        if (!tab) return;
-        if (tab === activeTab) {
-          tab.className = 'px-4 py-1 rounded-full font-semibold transition-all bg-rose-600 text-white shadow-sm';
-        } else {
-          tab.className = 'px-4 py-1 rounded-full font-semibold transition-all text-pink-300 hover:text-white';
+    if (nextNoteBtn && dynamicNoteEl) {
+      nextNoteBtn.addEventListener('click', () => {
+        // Micro-confetti burst
+        if (typeof confetti === 'function') {
+          confetti({
+            particleCount: 20,
+            spread: 50,
+            origin: { y: 0.6 },
+            colors: ['#ff3366', '#ff758c', '#ffd166', '#ffffff']
+          });
         }
+
+        // Animate text transition
+        dynamicNoteEl.style.opacity = '0';
+        dynamicNoteEl.style.transform = 'translateY(8px)';
+
+        setTimeout(() => {
+          currentNoteIndex = (currentNoteIndex + 1) % loveNotes.length;
+          dynamicNoteEl.textContent = `"${loveNotes[currentNoteIndex]}"`;
+          dynamicNoteEl.style.transition = 'all 0.35s ease';
+          dynamicNoteEl.style.opacity = '1';
+          dynamicNoteEl.style.transform = 'translateY(0)';
+        }, 200);
       });
     }
-
-    if (tabDays) {
-      tabDays.addEventListener('click', () => {
-        currentMode = 'days';
-        setTabStyles(tabDays);
-        updateCounter();
-      });
-    }
-    if (tabDetailed) {
-      tabDetailed.addEventListener('click', () => {
-        currentMode = 'detailed';
-        setTabStyles(tabDetailed);
-        updateCounter();
-      });
-    }
-
-    function updateCounter() {
-      const now = new Date();
-      const birthTime = birthdate.getTime();
-      let totalDiff = Math.abs(now.getTime() - birthTime);
-
-      // Total days count
-      const totalDays = Math.floor(totalDiff / (1000 * 60 * 60 * 24));
-      const remHours = Math.floor((totalDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const remMinutes = Math.floor((totalDiff % (1000 * 60 * 60)) / (1000 * 60));
-      const remSeconds = Math.floor((totalDiff % (1000 * 60)) / 1000);
-
-      // Detailed Years, Months, Days breakdown
-      let years = now.getFullYear() - birthdate.getFullYear();
-      let birthMonth = birthdate.getMonth();
-      let currentMonth = now.getMonth();
-      let birthDay = birthdate.getDate();
-      let currentDay = now.getDate();
-
-      let months = currentMonth - birthMonth;
-      if (currentDay < birthDay) {
-        months--;
-      }
-      if (months < 0) {
-        years--;
-        months += 12;
-      }
-      let prevMonthDate = new Date(now.getFullYear(), now.getMonth(), 0);
-      let days = currentDay >= birthDay ? (currentDay - birthDay) : (prevMonthDate.getDate() - birthDay + currentDay);
-
-      // Update Top Badge
-      if (ageBadgeEl) {
-        ageBadgeEl.textContent = `عمر فاطمة الجميل: ${years} سنة و ${months} شهور و ${days} يوماً من النور والرقة ✨`;
-      }
-
-      // Render Cards based on Mode
-      if (currentMode === 'days') {
-        // Mode 1: Total Days (Matches user screenshot: 8241+ Days)
-        if (unit1) unit1.textContent = 'يوم';
-        if (unit2) unit2.textContent = 'ساعة';
-        if (unit3) unit3.textContent = 'دقيقة';
-        if (unit4) unit4.textContent = 'ثانية';
-
-        if (daysEl) daysEl.textContent = String(totalDays);
-        if (hoursEl) hoursEl.textContent = String(remHours).padStart(2, '0');
-        if (minutesEl) minutesEl.textContent = String(remMinutes).padStart(2, '0');
-        if (secondsEl) secondsEl.textContent = String(remSeconds).padStart(2, '0');
-      } else if (currentMode === 'detailed') {
-        // Mode 2: Years, Months, Days, Seconds
-        if (unit1) unit1.textContent = 'سنة';
-        if (unit2) unit2.textContent = 'شهر';
-        if (unit3) unit3.textContent = 'يوم';
-        if (unit4) unit4.textContent = 'ثانية';
-
-        if (daysEl) daysEl.textContent = String(years);
-        if (hoursEl) hoursEl.textContent = String(months).padStart(2, '0');
-        if (minutesEl) minutesEl.textContent = String(days).padStart(2, '0');
-        if (secondsEl) secondsEl.textContent = String(remSeconds).padStart(2, '0');
-      }
-    }
-
-    updateCounter();
-    setInterval(updateCounter, 1000);
   }
 
-  startLiveCounter();
+  initLoveNotesGenerator();
 
   // -----------------------------------------------------------------
   // 7. Vanilla JS Typewriter Effect Engine
@@ -504,7 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (item) {
       if (slideTitleEl) slideTitleEl.textContent = item.title;
       if (slideCaptionEl) slideCaptionEl.textContent = item.caption;
-      if (slideDateEl) slideDateEl.textContent = item.date;
+      if (slideDateEl) slideDateEl.textContent = item.tag || '';
       if (slideLocationEl) slideLocationEl.textContent = item.location;
       if (reelCounterBadge) {
         const cur = String(index + 1).padStart(2, '0');
@@ -627,7 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="pt-4 text-center">
           <h4 class="font-cairo font-bold text-sm text-gray-900 group-hover:text-rose-600 transition-colors">${item.title}</h4>
           <p class="font-tajawal text-xs text-gray-600 mt-1 line-clamp-2">${item.caption}</p>
-          <span class="inline-block mt-3 text-[11px] font-semibold text-rose-500 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">${item.date}</span>
+          <span class="inline-block mt-3 text-[11px] font-semibold text-rose-500 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">${item.tag || 'لحظة حب ❤️'}</span>
         </div>
       </div>
     `;}).join('');
@@ -669,7 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (lightboxTitle) lightboxTitle.textContent = item.title;
     if (lightboxCaption) lightboxCaption.textContent = item.caption;
-    if (lightboxDate) lightboxDate.textContent = `${item.date} • ${item.location}`;
+    if (lightboxDate) lightboxDate.textContent = item.location ? `${item.location} • ${item.tag || 'ذكرى لا تُنسى ❤️'}` : (item.tag || 'ذكرى لا تُنسى ❤️');
 
     lightboxModal.classList.add('active');
   }
@@ -712,12 +639,12 @@ document.addEventListener('DOMContentLoaded', () => {
           <!-- Milestone Card -->
           <div class="w-full md:w-1/2 ${isEven ? 'md:pr-10' : 'md:pl-10'}">
             <div class="glass-card rounded-2xl p-5 sm:p-6 border border-rose-400/25 relative overflow-hidden group hover:border-rose-400/60 transition-all">
-              <!-- Top Date Badge -->
+              <!-- Top Milestone Badge -->
               <div class="flex items-center justify-between mb-3">
                 <span class="text-xs font-bold text-love-gold px-3 py-1 rounded-full bg-love-gold/10 border border-love-gold/30">
-                  ${item.date}
+                  ${item.stage || 'محطة حب ❤️'}
                 </span>
-                <span class="text-xs text-rose-300 font-semibold">${item.tag || 'ذكرى ❤️'}</span>
+                <span class="text-xs text-rose-300 font-semibold">${item.tag || 'محفورة في القلب 🌟'}</span>
               </div>
 
               <!-- Thumbnail if present -->
